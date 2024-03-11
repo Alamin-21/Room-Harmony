@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hall Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('img7.jpg'); /* Replace 'your-background-image-url.jpg' with your image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #4c0f0f;
+            padding: 15px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #444;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        footer {
+            background-color: #4c0f0f;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .form-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4c0f0f;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4c0f0f;
+        }
+
+        input[type="submit"] {
+            background-color: #4c0f0f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #632424;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hall Management System</h1>
+    </header>
+
+    <nav id="navLinks">
+        <a onclick="loadPage('home'); toggleButton(this);">Home</a>
+        <a onclick="loadPage('hall'); toggleButton(this);">Hall</a>
+        <a onclick="loadPage('notice'); toggleButton(this);">Notice</a>
+        <a onclick="loadPage('contact'); toggleButton(this);">Contact</a>
+        <a id="loginButton" onclick="toggleLoginForm();">Login</a>
+        <a onclick="loadPage('admins'); toggleButton(this);">Admins</a>
+    </nav>
+
+    <main id="content">
+        <!-- Hall names container -->
+        <div id="hallContainer" style="display: none;">
+            <h2>Halls</h2>
+            <ul>
+                <li>Hall 1</li>
+                <li>Hall 2</li>
+                <li>Hall 3</li>
+                <li>Hall 4</li>
+                <li>Hall 5</li>
+                <li>Hall 6</li>
+                <li>Hall 7</li>
+                <li>Hall 8</li>
+            </ul>
+        </div>
+
+        <!-- Login form overlay -->
+        <div class="form-overlay" id="formOverlay" onclick="toggleLoginForm()">
+            <div class="form-container" onclick="event.stopPropagation()">
+                <div class="close-button" onclick="toggleLoginForm()">✖</div>
+                <h2>Login to Hostel Management System</h2>
+                <form action="http://localhost:3061/Login" method="POST" id="loginForm">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="submit" value="Login">
+                    <p class="error-message" id="error-message"></p>
+                    <!-- Link to registration page -->
+                    <p>Don't have an account? <a href="reg.html">Register here</a></p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 WM. All rights reserved</p>
+    </footer>
+
+    <script>
+        function loadPage(page) {
+            var content = document.getElementById('content');
+            var hallContainer = document.getElementById('hallContainer');
+
+            switch (page) {
+                case 'home':
+                    content.innerHTML = '<h2>Welcome to the Hall Management System</h2><p>This is the main page content. You can customize this section based on your requirements.</p>';
+                    hallContainer.style.display = 'none';
+                    break;
+                case 'hall':
+                    content.innerHTML = '';
+                    hallContainer.style.display = 'block';
+                    break;
+                case 'notice':
+                    content.innerHTML = '<h2>Notice</h2><p>List of notices goes here...</p>';
+                    hallContainer.style.display = 'none';
+                    break;
+                case 'contact':
+                    content.innerHTML = '<h2>Contact</h2><p>Contact information goes here...</p>';
+                    hallContainer.style.display = 'none';
+                    break;
+                case 'admins':
+                    content.innerHTML = '<h2>Admins</h2><p>List of admins goes here...</p>';
+                    hallContainer.style.display = 'none';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function toggleLoginForm() {
+            var formOverlay = document.getElementById('formOverlay');
+            formOverlay.style.display = (formOverlay.style.display === 'none' || formOverlay.style.display === '') ? 'flex' : 'none';
+        }
+
+        function toggleButton(button) {
+            var buttons = document.querySelectorAll('#navLinks a');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].style.backgroundColor = '';
+                buttons[i].style.color = 'white';
+            }
+            button.style.backgroundColor = '#555';
+            button.style.color = '#fff';
+        }
+    </script>
+</body>
+</html>
