@@ -1,0 +1,48 @@
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+const port = 3501;
+
+// MySQL connection
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root', // Replace with your MySQL username
+  password: 'alamin', // Replace with your MySQL password
+  database: 'hostel' // Replace with your database name
+});
+
+// Connect to MySQL
+connection.connect(err => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log('Connected to MySQL');
+});
+
+// Serve the room.html file when a request is made to the root URL
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/room.html');
+});
+
+// Route to fetch room data
+app.get('/room/:roomNumber', (req, res) => {
+  const roomNumber = req.params.roomNumber;
+  const query = `SELECT s.student_id, s.student_name, se.seat_no
+                 FROM student s
+                 INNER JOIN seat se ON s.student_id = se.student_id
+                 WHERE se.room_id = ?`;
+  connection.query(query, [roomNumber], (err, rows) => {
+    if (err) {
+      console.error('Error querying MySQL:', err);
+      res.status(500).json({ error: 'Error querying MySQL' });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
+// Start server
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
