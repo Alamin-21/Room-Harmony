@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Selection</title>
+<style>
+  /* Style for buttons */
+  .room-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .room-button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Style for room container */
+  .room-container {
+    display: none;
+    background-color: #28a745;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style for container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Style for table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #8b7c7c; /* Light gray background */
+  }
+
+  th, td {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 15px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  /* Background style */
+  body {
+    background-color: #090214; /* Light gray */
+    margin: 20px; /* Add margin for centering content */
+  }
+</style>
+</head>
+<body>
+
+<!-- Container for centering content -->
+<div class="container">
+
+  <!-- Buttons for each room -->
+  <div id="roomButtons">
+    <!-- Generate buttons for 10 rooms -->
+    <button class="room-button" onclick="showRoomContainer(101)">Room 101</button>
+    <button class="room-button" onclick="showRoomContainer(102)">Room 102</button>
+    <button class="room-button" onclick="showRoomContainer(103)">Room 103</button>
+    <button class="room-button" onclick="showRoomContainer(104)">Room 104</button>
+    <button class="room-button" onclick="showRoomContainer(105)">Room 105</button>
+    <button class="room-button" onclick="showRoomContainer(106)">Room 106</button>
+    <button class="room-button" onclick="showRoomContainer(107)">Room 107</button>
+    <button class="room-button" onclick="showRoomContainer(108)">Room 108</button>
+    <button class="room-button" onclick="showRoomContainer(109)">Room 109</button>
+    <button class="room-button" onclick="showRoomContainer(110)">Room 110</button>
+    <!-- Add buttons for other rooms as needed -->
+  </div>
+
+  <!-- Room containers will be inserted here -->
+
+</div>
+
+<script>
+  // JavaScript function to show room container
+  function showRoomContainer(roomNumber) {
+    // Hide all room containers
+    var roomContainers = document.getElementsByClassName("room-container");
+    for (var i = 0; i < roomContainers.length; i++) {
+      roomContainers[i].style.display = "none";
+    }
+  
+    // Create a new room container if not exists
+    var roomContainerId = "roomContainer" + roomNumber;
+    var roomContainer = document.getElementById(roomContainerId);
+    if (!roomContainer) {
+      roomContainer = document.createElement("div");
+      roomContainer.id = roomContainerId;
+      roomContainer.className = "room-container";
+      document.body.appendChild(roomContainer);
+    }
+  
+    // Fetch data from server using AJAX
+    fetch('/room/' + roomNumber)
+      .then(response => response.json())
+      .then(data => {
+        // Update room container contents
+        roomContainer.innerHTML = "<h2>Room " + roomNumber + "</h2>";
+        var tableHtml = "<table><tr><th>Seat</th><th>Student ID</th><th>Name</th></tr>";
+        data.forEach(row => {
+          tableHtml += "<tr><td>" + row.seat_no + "</td><td>" + row.student_id + "</td><td>" + row.student_name + "</td></tr>";
+        });
+
+
+        
+        tableHtml += "</table>";
+        roomContainer.innerHTML += tableHtml;
+      })
+      .catch(error => console.error('Error fetching room data:', error));
+  
+    // Show the room container
+    roomContainer.style.display = "block";
+  }
+  </script>
+
+</body>
+</html>
