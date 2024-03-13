@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Selection</title>
+<style>
+  /* Style for buttons */
+  .room-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .room-button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Style for room container */
+  .room-container {
+    display: none;
+    background-color: #28a745;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Style for container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Style for table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #8b7c7c; /* Light gray background */
+  }
+
+  th, td {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 15px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  /* Background style */
+  body {
+    background-color: #090214; /* Light gray */
+    margin: 20px; /* Add margin for centering content */
+  }
+
+  /* Style for header */
+  header {
+    text-align: center;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header with hall name -->
+<header>
+  <h1>Abdur Rab Hall</h1>
+</header>
+
+<!-- Container for centering content -->
+<div class="container">
+
+  <!-- Buttons for each room -->
+  <div id="roomButtons">
+    <!-- Generate buttons for 10 rooms -->
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_101')">Room 101</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_102')">Room 102</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_103')">Room 103</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_104')">Room 104</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_105')">Room 105</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_106')">Room 106</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_107')">Room 107</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_108')">Room 108</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_109')">Room 109</button>
+    <button class="room-button" onclick="fetchRoomData('Rab_H', 'Rab_H_110')">Room 110</button>
+  </div>
+
+  <!-- Room containers will be inserted here -->
+
+</div>
+
+<script>
+    // JavaScript function to fetch room data
+    function fetchRoomData(hallName, roomId) {
+      fetch(`http://localhost:3210/room/${hallName}/${roomId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Show the room container
+          showRoomContainer(roomId, data);
+        })
+        .catch(error => console.error('Error fetching room data:', error));
+    }
+    
+    // JavaScript function to show room container
+    function showRoomContainer(roomId, data) {
+      // Hide all room containers
+      var roomContainers = document.getElementsByClassName("room-container");
+      for (var i = 0; i < roomContainers.length; i++) {
+        roomContainers[i].style.display = "none";
+      }
+    
+      // Create a new room container if not exists
+      var roomContainerId = "roomContainer" + roomId;
+      var roomContainer = document.getElementById(roomContainerId);
+      if (!roomContainer) {
+        roomContainer = document.createElement("div");
+        roomContainer.id = roomContainerId;
+        roomContainer.className = "room-container";
+        document.body.appendChild(roomContainer);
+      }
+    
+      // Update room container contents
+      roomContainer.innerHTML = "<h2>Room " + roomId + "</h2>";
+      var tableHtml = "<table><tr><th>Student ID</th><th>Name</th></tr>";
+      data.forEach(row => {
+        tableHtml += "<tr><td>" + row.STUDENT_ID + "</td><td>" + row.NAME + "</td></tr>";
+      });
+      tableHtml += "</table>";
+      roomContainer.innerHTML += tableHtml;
+    
+      // Show the room container
+      roomContainer.style.display = "block";
+    }
+    </script>
+  
+
+</body>
+</html>
