@@ -144,9 +144,9 @@
     
       // Update room container contents
       roomContainer.innerHTML = "<h2>Room " + roomId + "</h2>";
-      var tableHtml = "<table><tr><th>Student ID</th><th>Name</th></tr>";
+      var tableHtml = "<table><tr><th>SEAT_NO</th><th>Student ID</th><th>Name</th></tr>";
       data.forEach(row => {
-        tableHtml += "<tr><td>" + row.STUDENT_ID + "</td><td>" + row.NAME + "</td></tr>";
+        tableHtml += "<tr><td>" + row.SEAT_NO + "</td><td>" + row.STUDENT_ID + "</td><td>" + row.NAME + "</td></tr>";
       });
       tableHtml += "</table>";
       roomContainer.innerHTML += tableHtml;
