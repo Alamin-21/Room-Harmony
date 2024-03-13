@@ -30,19 +30,11 @@ app.get('/room/:hallName/:roomId', (req, res) => {
   const hallName = req.params.hallName;
   const roomId = req.params.roomId;
   const query = `
-  SELECT 
-  s.SEAT_NO,
-  IFNULL(s.STUDENT_ID, 'null') AS STUDENT_ID,
-  IFNULL(st.NAME, 'null') AS STUDENT_NAME,
-  r.ROOM_NO
-FROM 
-  ROOM r
-LEFT JOIN 
-  seat s ON r.ROOM_ID = s.ROOM_ID
-LEFT JOIN 
-  STUDENT st ON s.STUDENT_ID = st.STUDENT_ID
-WHERE
-  r.HALL_ID = ? AND r.ROOM_ID = ?;
+  SELECT s.STUDENT_ID, s.NAME, se.SEAT_NO
+  FROM STUDENT s
+  INNER JOIN SEAT se ON s.STUDENT_ID = se.STUDENT_ID
+  INNER JOIN ROOM r ON se.ROOM_ID = r.ROOM_ID
+  WHERE r.HALL_ID = ? AND r.ROOM_ID = ?;
 
   `;
 
