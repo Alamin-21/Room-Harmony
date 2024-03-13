@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('img7.jpg'); /* Replace 'your-background-image-url.jpg' with your image URL */
+            background-image: url('img7.jpg'); /* Replace 'img7.jpg' with your image URL */
             background-size: cover;
             background-repeat: no-repeat;
             display: flex;
@@ -62,6 +62,7 @@
             padding: 10px;
         }
 
+
         .form-overlay {
             position: fixed;
             top: 0;
@@ -94,6 +95,64 @@
             color: #4c0f0f;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 2;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay-content {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 50%;
+            max-width: 600px;
+            overflow: auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4c0f0f;
+        }
+
+        #hallList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #hallList li {
+            background-color: #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
         input[type="text"],
         input[type="password"],
         input[type="submit"] {
@@ -112,7 +171,7 @@
         }
 
         input[type="submit"] {
-            background-color: #4c0f0f;
+            background-color: #ea0808;
             color: white;
             border: none;
             cursor: pointer;
@@ -120,20 +179,13 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #632424;
+            background-color: #246330;
         }
 
         .error-message {
             color: red;
             margin-top: 10px;
             text-align: center;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .form-container {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -143,95 +195,111 @@
     </header>
 
     <nav id="navLinks">
-        <a onclick="loadPage('home'); toggleButton(this);">Home</a>
-        <a onclick="loadPage('hall'); toggleButton(this);">Hall</a>
-        <a onclick="loadPage('notice'); toggleButton(this);">Notice</a>
-        <a onclick="loadPage('contact'); toggleButton(this);">Contact</a>
-        <a id="loginButton" onclick="toggleLoginForm();">Login</a>
-        <a onclick="loadPage('admins'); toggleButton(this);">Admins</a>
+        <a onclick="loadPage('home')">Home</a>
+        <a onclick="toggleOverlay('hallOverlay')">Hall</a>
+        <a onclick="toggleOverlay('noticeOverlay')">Notice</a>
+        <a onclick="toggleOverlay('adminOverlay')">Admin</a>
+        <a onclick="toggleOverlay('contactOverlay')">Contact</a>
+        <a onclick="toggleLoginForm()">Login</a>
     </nav>
 
     <main id="content">
-        <!-- Hall names container -->
-        <div id="hallContainer" style="display: none;">
-            <h2>Halls</h2>
-            <ul>
-                <li>Hall 1</li>
-                <li>Hall 2</li>
-                <li>Hall 3</li>
-                <li>Hall 4</li>
-                <li>Hall 5</li>
-                <li>Hall 6</li>
-                <li>Hall 7</li>
-                <li>Hall 8</li>
-            </ul>
-        </div>
-
-        <!-- Login form overlay -->
-        <div class="form-overlay" id="formOverlay" onclick="toggleLoginForm()">
-            <div class="form-container" onclick="event.stopPropagation()">
-                <div class="close-button" onclick="toggleLoginForm()">✖</div>
-                <h2>Login to Hostel Management System</h2>
-                <form action="http://localhost:3061/Login" method="POST" id="loginForm">
-                    <input type="text" id="username" name="username" placeholder="Username" required>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
-                    <input type="submit" value="Login">
-                    <p class="error-message" id="error-message"></p>
-                    <!-- Link to registration page -->
-                    <p>Don't have an account? <a href="reg.html">Register here</a></p>
-                </form>
-            </div>
-        </div>
+        <!-- Your main content goes here -->
     </main>
 
     <footer>
         <p>&copy; 2024 WM. All rights reserved</p>
     </footer>
 
+    <!-- Hall overlay -->
+    <div class="overlay" id="hallOverlay">
+        <div class="overlay-content">
+            <span class="close-button" onclick="toggleOverlay('hallOverlay')">✖</span>
+            <h2>List of Hall</h2>
+            <ul id="hallList">
+                <!-- Hall names will be populated dynamically here -->
+                <li><p><a href="Shajalal Hall.html">Shajalal Hall</a></p></li>
+                <li><p><a href="Sha Amanat.html">Sha Amanat Hall</a></p></li>
+                <li><p><a href="http://localhost:3210">Abdur Rab Hall</a></p></li>
+                
+            </ul>
+        </div>
+    </div>
+
+    <!-- Notice overlay -->
+    <div class="overlay" id="noticeOverlay">
+        <div class="overlay-content">
+            <span class="close-button" onclick="toggleOverlay('noticeOverlay')">✖</span>
+            <h2>Notices</h2>
+            <div id="noticeList">
+                <!-- Notice items will be populated dynamically here -->
+                <p>Notice 1</p>
+                <p>Notice 2</p>
+                <p>Notice 3</p>
+                <p>Notice 4</p>
+                <p>Notice 5</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin overlay -->
+    <div class="overlay" id="adminOverlay">
+        <div class="overlay-content">
+            <span class="close-button" onclick="toggleOverlay('adminOverlay')">✖</span>
+            <h2>Admins</h2>
+            <div id="adminList">
+                <!-- Admin names will be populated dynamically here -->
+                <p>Admin 1</p>
+                <p>Admin 2</p>
+                <p>Admin 3</p>
+                <p>Admin 4</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact overlay -->
+    <div class="overlay" id="contactOverlay">
+        <div class="overlay-content">
+            <span class="close-button" onclick="toggleOverlay('contactOverlay')">✖</span>
+            <h2>Contact</h2>
+            <p>Contact information will be displayed here.</p>
+        </div>
+    </div>
+
+    <!-- Login form overlay -->
+    <div class="overlay" id="formOverlay" style="display: none;">
+        <div class="form-container">
+            <span class="close-button" onclick="toggleLoginForm()">✖</span>
+            <h2>Login to Hall Management System</h2>
+            <form action="http://localhost:3062/Login" method="POST" id="loginForm">
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+                <p class="error-message" id="error-message"></p>
+                <p>Don't have an account? <a href="reg.html">Register here</a></p>
+            </form>
+        </div>
+    </div>
+
     <script>
         function loadPage(page) {
-            var content = document.getElementById('content');
-            var hallContainer = document.getElementById('hallContainer');
+            // Implement loading of pages based on 'page' parameter
+            // For demonstration, let's just console log the page name
+            console.log("Loading page:", page);
+        }
 
-            switch (page) {
-                case 'home':
-                    content.innerHTML = '<h2>Welcome to the Hall Management System</h2><p>This is the main page content. You can customize this section based on your requirements.</p>';
-                    hallContainer.style.display = 'none';
-                    break;
-                case 'hall':
-                    content.innerHTML = '';
-                    hallContainer.style.display = 'block';
-                    break;
-                case 'notice':
-                    content.innerHTML = '<h2>Notice</h2><p>List of notices goes here...</p>';
-                    hallContainer.style.display = 'none';
-                    break;
-                case 'contact':
-                    content.innerHTML = '<h2>Contact</h2><p>Contact information goes here...</p>';
-                    hallContainer.style.display = 'none';
-                    break;
-                case 'admins':
-                    content.innerHTML = '<h2>Admins</h2><p>List of admins goes here...</p>';
-                    hallContainer.style.display = 'none';
-                    break;
-                default:
-                    break;
+        function toggleOverlay(overlayId) {
+            var overlay = document.getElementById(overlayId);
+            if (overlay.style.display === 'none' || overlay.style.display === '') {
+                overlay.style.display = 'flex';
+            } else {
+                overlay.style.display = 'none';
             }
         }
 
         function toggleLoginForm() {
             var formOverlay = document.getElementById('formOverlay');
-            formOverlay.style.display = (formOverlay.style.display === 'none' || formOverlay.style.display === '') ? 'flex' : 'none';
-        }
-
-        function toggleButton(button) {
-            var buttons = document.querySelectorAll('#navLinks a');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].style.backgroundColor = '';
-                buttons[i].style.color = 'white';
-            }
-            button.style.backgroundColor = '#555';
-            button.style.color = '#fff';
+            formOverlay.style.display = formOverlay.style.display === 'none' ? 'flex' : 'none';
         }
     </script>
 </body>
