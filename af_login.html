@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+            text-align: center; /* Center student information and button */
+        }
+
+        .table-container {
+            width: 60%; /* Adjusted width */
+            margin: 0 auto; /* Centering the container */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 2px solid #ddd; /* Add border around table */
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd; /* Add border around cells */
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .btn-container {
+            text-align: center; /* Align button to the center */
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Student Dashboard</h1>
+    </header>
+    <main>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Student ID</td>
+                    <td><%= student.student_id %></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td><%= student.name %></td>
+                </tr>
+                <tr>
+                    <td>Mobile Number</td>
+                    <td><%= student.mobile %></td>
+                </tr>
+                <tr>
+                    <td>Session</td>
+                    <td><%= student.session %></td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td><%= student.department %></td>
+                </tr>
+                <tr>
+                    <td>Attached Hall</td>
+                    <td><%= student.attached_hall %></td>
+                </tr>
+            </table>
+        </div>
+        <div class="btn-container">
+            <a href="#" class="btn">Apply for Room</a>
+        </div>
+    </main>
+</body>
+</html>
