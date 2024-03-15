@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Add your CSS styles here */
+        /* This is just an example, you can customize it as needed */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Dashboard</h1>
+
+        <h2>Student Data:</h2>
+        <p>Student ID: <span id="studentId"></span></p>
+        <p>Name: <span id="studentName"></span></p>
+        <p>Department: <span id="studentDepartment"></span></p>
+
+        <h2>Registration Data:</h2>
+        <p>Email: <span id="registrationEmail"></span></p>
+
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <!-- Include your JavaScript code here to fetch and display data -->
+    <script>
+        // Function to fetch student and registration data from the server
+        function fetchData() {
+            fetch('/data') // Assuming there's an endpoint '/data' to fetch student and registration data
+                .then(response => response.json())
+                .then(data => {
+                    // Display student data
+                    document.getElementById("studentId").textContent = data.student.STUDENT_ID;
+                    document.getElementById("studentName").textContent = data.student.NAME;
+                    document.getElementById("studentDepartment").textContent = data.student.DEPARTMENT;
+
+                    // Display registration data
+                    document.getElementById("registrationEmail").textContent = data.registration.EMAIL;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    document.getElementById("errorMessage").textContent = 'Error fetching data. Please try again later.';
+                });
+        }
+
+        // Call fetchData function when the page loads
+        window.onload = fetchData;
+    </script>
+</body>
+</html>
