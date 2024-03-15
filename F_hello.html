@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .success-message {
+            color: green;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login</h1>
+    <div class="success-message" id="successMessage" style="display: none;">You logged in successfully!</div>
+    <button class="btn" id="goToDashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+
+    <script>
+        // Function to redirect to dashboard with student ID
+        function goToDashboard() {
+            // Get the student ID from the URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentid = urlParams.get('studentid');
+            // Redirect to dashboard with student ID as query parameter
+            window.location.href = `/dashboard?studentid=${studentid}`;
+        }
+
+        // Check if login successful message is present in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginSuccess = urlParams.get('loginSuccess');
+
+        if (loginSuccess === 'true') {
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
