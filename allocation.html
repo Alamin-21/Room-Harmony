@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Allocation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #container {
+    max-width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  form {
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  #allocation-result {
+    margin-top: 20px;
+  }
+
+  #allocation-message {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <h2>Student Allocation</h2>
+
+    <div id="allocation-section">
+      <button onclick="checkStudentAllocation()">Check Student Allocation</button>
+    </div>
+
+    <div id="allocation-form" style="display: none;">
+      <form id="allocation-form" onsubmit="allocateStudent(event)">
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" name="studentId" readonly>
+        <br>
+        <label for="hallId">Hall ID:</label>
+        <input type="text" id="hallId" name="hallId" readonly>
+        <br>
+        <label for="roomId">Room ID:</label>
+        <select id="roomId" name="roomId" onchange="fetchAvailableSeats()">
+          <!-- Options will be dynamically added here -->
+        </select>
+        <br>
+        <label for="seatId">Seat ID:</label>
+        <select id="seatId" name="seatId">
+          <!-- Options will be dynamically added here -->
+        </select>
+        <br>
+        <button type="button" onclick="allocateStudent()">Allocate</button>
+      </form>
+    </div>
+
+    <div id="allocation-result" style="display: none;">
+      <p id="allocation-message"></p>
+      <button onclick="rejectApplication()">Reject Application</button>
+    </div>
+  </div>
+
+  <script>
+    // Function to extract query parameters from the URL
+    function getQueryVariable(variable) {
+      const query = window.location.search.substring(1);
+      const vars = query.split('&');
+      for (let i = 0; i < vars.length; i++) {
+        const pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) === variable) {
+          return decodeURIComponent(pair[1]);
+        }
+      }
+      console.error('Query parameter not found: ' + variable);
+    }
+
+    window.onload = function() {
+      const studentId = getQueryVariable('studentId');
+      document.getElementById('studentId').value = studentId || '';
+    };
+
+    function checkStudentAllocation() {
+      const studentId = document.getElementById('studentId').value;
+      fetch(`/checkAllocation?studentId=${studentId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.allocated) {
+            document.getElementById('allocation-section').style.display = 'none';
+            document.getElementById('allocation-result').style.display = 'block';
+            document.getElementById('allocation-message').textContent = 'Student is already allocated a seat.';
+          } else {
+            document.getElementById('allocation-section').style.display = 'none';
+            document.getElementById('allocation-form').style.display = 'block';
+            document.getElementById('allocation-result').style.display = 'none';
+            fetchAvailableRooms();
+          }
+        })
+        .catch(error => console.error('Error checking allocation:', error));
+    }
+
+    function rejectApplication() {
+      const studentId = document.getElementById('studentId').value;
+      fetch(`/deleteApplication?applicationId=${studentId}`, { method: 'DELETE' })
+        .then(response => {
+          if (response.ok) {
+            alert('Application rejected and deleted successfully.');
+            window.location.href = '/'; // Redirect to main page after rejection
+          } else {
+            console.error('Failed to reject application');
+            alert('Failed to reject application');
+          }
+        })
+        .catch(error => {
+          console.error('Error rejecting application:', error);
+          alert('Error rejecting application');
+        });
+    }
+
+
+    window.onload = function() {
+  const studentId = getQueryVariable('studentId');
+  document.getElementById('studentId').value = studentId || '';
+  fetch(`/getAttachedHall?studentId=${studentId}`)
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('hallId').value = data.attachedHallId;
+    })
+    .catch(error => console.error('Error fetching attached hall:', error));
+};
+
+
+
+
+    function fetchAvailableRooms() {
+      const studentId = document.getElementById('studentId').value;
+      fetch(`/availableRooms?studentId=${studentId}`)
+        .then(response => response.json())
+        .then(data => {
+          const roomSelect = document.getElementById('roomId');
+          roomSelect.innerHTML = '';
+          data.rooms.forEach(room => {
+            const option = document.createElement('option');
+            option.value = room.ROOM_ID;
+            option.textContent = room.ROOM_NO;
+            roomSelect.appendChild(option);
+          });
+          fetchAvailableSeats();
+        })
+        .catch(error => console.error('Error fetching available rooms:', error));
+    }
+
+    function fetchAvailableSeats() {
+      const roomId = document.getElementById('roomId').value;
+      fetch(`/availableSeats?roomId=${roomId}`)
+        .then(response => response.json())
+        .then(data => {
+          const seatSelect = document.getElementById('seatId');
+          seatSelect.innerHTML = '';
+          data.seats.forEach(seat => {
+            const option = document.createElement('option');
+            option.value = seat.SEAT_ID;
+            option.textContent = seat.SEAT_NO;
+            seatSelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Error fetching available seats:', error));
+    }
+
+    function allocateStudent() {
+  const form = document.getElementById('allocation-form');
+  const formData = new FormData(form);
+  fetch('/allocateStudent', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+    window.location.reload(); // Refresh the page after allocation
+  })
+  .catch(error => console.error('Error allocating student:', error));
+}
+
+
+  </script>
+</body>
+</html>
