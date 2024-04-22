@@ -234,11 +234,8 @@
             <h2>Notices</h2>
             <div id="noticeList">
                 <!-- Notice items will be populated dynamically here -->
-                <p>Notice 1</p>
-                <p>Notice 2</p>
-                <p>Notice 3</p>
-                <p>Notice 4</p>
-                <p>Notice 5</p>
+                <p><a href="https://drive.google.com/file/d/1-MIAZ-c9c-ZRqs4EOWwd9hTon_X_We1e/view?usp=sharing">Notice 1</a></p>
+                
             </div>
         </div>
     </div>
@@ -263,7 +260,9 @@
         <div class="overlay-content">
             <span class="close-button" onclick="toggleOverlay('contactOverlay')">✖</span>
             <h2>Contact</h2>
-            <p>Contact information will be displayed here.</p>
+            <p>If you face any problem with registering, logging in, or applying for a Seat</p>
+            <p.>please contact us at:</p>
+            <p>Email: roomharmony@gmail.com</p>
         </div>
     </div>
 
@@ -272,8 +271,8 @@
         <div class="form-container">
             <span class="close-button" onclick="toggleLoginForm()">✖</span>
             <h2>Login to Hall Management System</h2>
-            <form action="http://localhost:3062/Login" method="POST" id="loginForm">
-                <input type="text" id="studentid" name="studentid" placeholder="studentid" required>
+            <form action="http://localhost:3063/Login" method="POST" id="loginForm">
+                <input type="text" id="studentid" name="studentid" placeholder="Student Id" required>
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <input type="submit" value="Login">
                 <p class="error-message" id="error-message"></p>
@@ -306,3 +305,4 @@
     </script>
 </body>
 </html>
+
